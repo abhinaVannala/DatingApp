@@ -1,4 +1,4 @@
-﻿dotnet ef daausing System;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 

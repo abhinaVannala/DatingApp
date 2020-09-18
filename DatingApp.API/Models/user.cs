@@ -1,6 +1,6 @@
 namespace DatingApp.API.Models
 {
-    public class User
+    public class user
     {
         public int Id {get ; set;}
 

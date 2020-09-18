@@ -3,12 +3,15 @@ import { NgModule } from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 
 
+
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
+import { ErrorInterceptorProvider }  from './services/error.interceptor';
+
 
 @NgModule({
   declarations: [
@@ -23,7 +26,7 @@ import { RegisterComponent } from './register/register.component';
     FormsModule
   ],
   providers: [
-    AuthService
+    ErrorInterceptorProvider
   ],
   bootstrap: [AppComponent]
 })
