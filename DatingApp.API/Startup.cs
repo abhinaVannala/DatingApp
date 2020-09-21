@@ -14,6 +14,12 @@ using Microsoft.Extensions.Logging;
 using DatingApp.API.Data;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
+using AutoMapper;
+using System.Net;
+using Microsoft.AspNetCore.Http;
+using DatingApp.API.Helpers;
 
 namespace DatingApp.API
 {
@@ -56,15 +62,15 @@ namespace DatingApp.API
                 app.UseDeveloperExceptionPage();
             }
             else
-            {
-                app.useExceptionHandler(builder =>{
+            { 
+                app.UseExceptionHandler(builder =>{
                     builder.Run(async context =>{
                         context.Response.StatusCode =(int)HttpStatusCode.InternalServerError;
 
-                        var error = context.Features.Get<IExceptioHandlerFeature>();
+                        var error = context.Features.Get<IExceptionHandlerFeature>();
                         if (error != null)
                         {
-                            context.Response.AddApplicationError(error.Error.Message);
+                            context.Response.AddAppicationError(error.Error.Message);
                             await context.Response.WriteAsync(error.Error.Message);
                         }
 
@@ -78,13 +84,15 @@ namespace DatingApp.API
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthentication();
             app.UseRouting();
-
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            
         }
     }
 }

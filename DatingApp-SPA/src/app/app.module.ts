@@ -1,7 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
-import { BsDropdownModule } from 'ngx-bootstrap';
+
+import { RouterModule } from '@angular/router';
 
 
 
@@ -11,7 +12,15 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
-import { ErrorInterceptorProvider }  from './services/error.interceptor';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+
+import { ErrorInterceptorProvider } from './services/error.interceptor';
+import { ListsComponent } from './lists/lists.component';
+import { MessagesComponent } from './messages/messages.component';
+import { MemberListComponent } from './member-list/member-list.component';
+import { appRoutes } from './routes';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 
 @NgModule({
@@ -19,13 +28,18 @@ import { ErrorInterceptorProvider }  from './services/error.interceptor';
       AppComponent,
       NavComponent,
       HomeComponent,
-      RegisterComponent
+      RegisterComponent,
+      ListsComponent,
+      MessagesComponent,
+      MemberListComponent
    ],
   imports: [
     BrowserModule,
     HttpClientModule,
     BsDropdownModule.forRoot(),
-    FormsModule
+    FormsModule,
+    RouterModule.forRoot(appRoutes),
+    BrowserAnimationsModule
   ],
   providers: [
     ErrorInterceptorProvider

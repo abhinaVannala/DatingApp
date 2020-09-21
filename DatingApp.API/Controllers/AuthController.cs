@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authorization;
+using System.Text;
+using System;
 
 namespace DatingApp.API.Controllers
 {
@@ -53,7 +55,7 @@ namespace DatingApp.API.Controllers
 
             
 
-            var userFromRepo = await -_repo.Login(userForLoginDto.Username.ToLower(), userForLoginDto.Password);
+            var userFromRepo = await _repo.Login(userForLoginDto.Username.ToLower(), userForLoginDto.Password);
             if(userFromRepo == null)
                  return Unauthorized();
 
@@ -67,9 +69,9 @@ namespace DatingApp.API.Controllers
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTimeUtil.Now.AddDays(1),
-                SigningCredentials= creds
+                Subject = new ClaimsIdentity(Claims),
+                Expires = DateTime.Now.AddDays(1),
+                SigningCredentials = creds
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -79,7 +81,6 @@ namespace DatingApp.API.Controllers
             return Ok(new{
                 token = tokenHandler.WriteToken(token)
             });
-
         }
         
     }
