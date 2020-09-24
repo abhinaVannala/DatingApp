@@ -31,6 +31,7 @@ import { MemberListResolver } from './_resolver/member-list.resolver';
 import {NgxGalleryModule } from 'ngx-gallery';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { MemberEditResolver } from './_resolver/member-edit.resolver';
+import { PreventUnsavedChanges } from './_guards/precent-unsaved-changes.guard';
 
 
 
@@ -90,6 +91,7 @@ export class CustomHammerConfig extends HammerGestureConfig {
     MemberDetailResolver,
     MemberListResolver,
     MemberEditResolver,
+    PreventUnsavedChanges,
     { provide: HAMMER_GESTURE_CONFIG , useClass: CustomHammerConfig},
     ErrorInterceptorProvider
   ],
