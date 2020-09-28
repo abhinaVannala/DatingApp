@@ -69,7 +69,8 @@
           </tab>
           <tab heading ="Edits Photos">
             
-            <p>photo edit will go here</p>
+            <app-photo-editor [photos]="user.photos" (getMemnerPhotoChange)="updateMainPhoto($event)"></app-photo-editor>
+        
 
           </tab>
         
