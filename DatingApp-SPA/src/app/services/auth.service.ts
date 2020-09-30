@@ -14,9 +14,9 @@ export class AuthService {
   baseUrl = environment.apiUrl +'auth/';
   jwtHelper = new JwtHelperService();
   decodedToken: any;
-  current User: User;
+  currentUser: User;
   photoUrl = new BehaviorSubject<string>('../..assets/user.png');
-  currentPhotoUrl = this.PhotoUrl.asObservable();
+  currentPhotoUrl = this.photoUrl.asObservable();
   
 
 constructor(private http: HttpClient ) { }
@@ -44,8 +44,8 @@ login(model: any) {
 
 }
 
-register(model: any){
-  return this.http.post(this.baseUrl + 'register', model);
+register(user: User){
+  return this.http.post(this.baseUrl + 'register', user);
 }
 
 loggedIn(){

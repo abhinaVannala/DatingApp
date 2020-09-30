@@ -12,7 +12,7 @@ import {Photo} from '../../_models/photo';
   styleUrls: ['./photo-editor.component.scss']
 })
 export class PhotoEditorComponent implements OnInit {
-  @Input() photo: Photo[];
+  @Input() photos: Photo[];
   @Output() getMemberPhotoChange = new EventEmitter<string>();
   uploader: FileUploader ;
   hasBaseDropZoneOver = false;
@@ -29,7 +29,7 @@ export class PhotoEditorComponent implements OnInit {
 
   initializeUploader(){
     this.uploader = new FileUploader({
-      url: this.baseUrl + 'users/' + this.authService.decodedtoken.nameId + '/photos',
+      url: this.baseUrl + 'users/' + this.authService.decodedToken.nameId + '/photos',
       authToken: 'Bearer ' + localStorage.getItem('token'),
       isHTML5: true,
       allowedFileType: ['image'],
@@ -48,9 +48,14 @@ export class PhotoEditorComponent implements OnInit {
           url : res.url,
           dateAdded: res.dateAdded,
           description: res.description,
-          isMain: res.IsMain
+          isMain: res.isMain
         };
         this.photos.push(photo);
+          if(photo.isMain){
+            this.authService.changeMemberPhoto(photo.url);
+            this.authService.currentUser.photoUrl = photo.url;
+            localStorage.setItem('user',JSON.stringify(this.authService.currentUser));
+          }
 
       }
     };
@@ -61,9 +66,21 @@ export class PhotoEditorComponent implements OnInit {
       this.currentMain = this.photos.filter(p => p.isMain === true)[0];
       this.currentMain.isMain = false;
       photo.isMain = true;
-      this.getMemberPhotoChange.emit(photo.url);
+      this.authService.changeMemberPhoto(photo.url);
+      this.authService.currentUser.photoUrl = photo.url;
+      localStorage.setItem('user',JSON.stringify(this.authService.currentUser));
     }, error =>{
       this.alertify.error(error);
+    });
+  }
+  deletePhoto(id: number){
+    this.alertify.confirm('Are you sure you want to delete this  photo?', ()=> {
+      this.userService.deletePhoto(this.authService.decodedToken.nameid, id).subscribe(() => {
+          this.photos.splice(this.photos.findIndex(p => p.id), 1);
+          this.alertify.success('photo has benn deleted');
+      }, error =>{
+        this.alertify.error('Failed to delete the photo');
+      });
     });
   }
 
